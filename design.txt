@@ -1,0 +1,7 @@
+user can view student properties (id, name, course, phone)
+-view
+-insert record
+-update/edit record
+-delete record
+-search record
+-sort records
