@@ -266,11 +266,11 @@ class EditDialog(QDialog):
 
     def update_student(self):
         connection = DatabaseConnection().connect()
-        print((self.student_name.text(), self.course_name.currentText(), self.student_phone.text(), self.id_))
+        print((self.student_name.text().title(), self.course_name.currentText(), self.student_phone.text(), self.id_))
         cursor = connection.cursor()
         # update selected row
         cursor.execute("UPDATE students SET name = ?, course = ?, mobile = ? WHERE id = ?",
-                       (self.student_name.text(), self.course_name.currentText(),
+                       (self.student_name.text().title(), self.course_name.currentText(),
                         self.student_phone.text(), self.id_))
 
         connection.commit()
