@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLabel, QWidget,\
+from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QComboBox,\
                             QGridLayout, QLineEdit, QPushButton
 import datetime as dt
 
@@ -47,8 +47,69 @@ class AgeCalculator(QWidget):
         return age
 
 
+class SpeedClaculator(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Average Speed Calculator")
+
+        grid = QGridLayout()
+
+        # create widgets
+        distance_label = QLabel("Distance: ")
+        self.distance_edit = QLineEdit()
+
+        self.mile_km_box = QComboBox()
+        self.mile_km_box.addItem('Metric (km)')
+        self.mile_km_box.addItem('Imperial (Miles)')
+        self.mile_km_box.activated.connect(self.current_index)
+
+        time_label = QLabel("Time (hours): ")
+        self.time_edit = QLineEdit()
+
+        calculate_button = QPushButton("Calculate")
+        calculate_button.clicked.connect(self.calculate_speed)
+
+        self.output_label = QLabel("")
+
+        # add unit variable
+        self.unit = "kmh"
+
+        # add widgets to grid
+        grid.addWidget(distance_label, 0, 0)
+        grid.addWidget(self.distance_edit, 0, 1)
+        grid.addWidget(self.mile_km_box, 0, 2)
+
+        grid.addWidget(time_label, 1, 0)
+        grid.addWidget(self.time_edit, 1, 1)
+
+        grid.addWidget(calculate_button, 2, 1)
+        grid.addWidget(self.output_label, 3, 0, 1, 2)
+
+        # add the grid to QWidget itself
+        self.setLayout(grid)
+
+    def current_index(self, index):
+        cindex = self.mile_km_box.currentIndex()
+        current_text = self.mile_km_box.currentText()
+        print(f"Index signal: {index}, currentIndex {cindex}, text: {current_text}")
+        if index == 1:
+            self.unit = "mph"
+        else:
+            self.unit = "kmh"
+        return index
+
+    def calculate_speed(self):
+        distance = float(self.distance_edit.text())
+        time_passed = float(self.time_edit.text())
+        avg = distance / time_passed
+        self.output_label.setText(f"Average speed: {avg:.2f} {self.unit}")
+
+
 app = QApplication(sys.argv)
-age_calculator = AgeCalculator()
-age_calculator.show()
+# age_calculator = AgeCalculator()
+# age_calculator.show()
+speed_calculator = SpeedClaculator()
+speed_calculator.show()
+
 
 sys.exit(app.exec())
