@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLabel, QWidget,\
                             QGridLayout, QLineEdit, QPushButton
 import datetime as dt
 
+
 class AgeCalculator(QWidget):
     def __init__(self):
         super().__init__()
@@ -34,10 +35,14 @@ class AgeCalculator(QWidget):
         self.setLayout(grid)
 
     def calculate_age(self):
-        current_year = dt.datetime.now().year
+        current_date = dt.datetime.now()
         str_input = self.date_line_edit.text()
-        birth_year = dt.datetime.strptime(str_input, "%m/%d/%Y").year
-        age = current_year - birth_year
+        birth_date = dt.datetime.strptime(str_input, "%m/%d/%Y")
+        age = current_date.year - birth_date.year
+        if current_date.month > birth_date.month:
+            age += 1
+        elif current_date.month == birth_date.month and current_date.day >= birth_date.day:
+            age += 1
         self.output_label.setText(f"{self.name_line_edit.text().title()} is {age} years old")
         return age
 
